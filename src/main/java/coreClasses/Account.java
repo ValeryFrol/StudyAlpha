@@ -20,7 +20,7 @@ public class Account {
         this.controlNumber = Integer.toString(rand.nextInt(10));
         setUserId(userId);
     }*/
-//fhfhfhfhfhfhfhfhhfhfh
+
     public Account(int currency, int bankAccount, int userId, Money money,int indicator, User user) {
         setCurrency(Integer.toString(currency));
         setBankAccount(Integer.toString(bankAccount));
