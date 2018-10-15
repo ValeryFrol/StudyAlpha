@@ -113,9 +113,9 @@ public class User {
         this.allUserAccounts.put(account.createAccountNumber(),account);
     }
 
-    public void cashFlow(Account account,Money money,int indicator) {
+   /* public void cashFlow(Account account,Money money,int indicator) {
         this.allUserAccounts.get(account.createAccountNumber()).setAmount(money,indicator);
-    }
+    }*/
 
     public void closeAccount(Account account) {
         boolean remove = this.allUserAccounts.remove(account.createAccountNumber(), account);

@@ -2,6 +2,7 @@ package coreClasses;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 public class Account {
@@ -29,6 +30,18 @@ public class Account {
         setUserId(Integer.toString(userId));
         setAmount(money,indicator);
         this.allUsers.put(Integer.valueOf(user.hashCode(user.getId(),user.getName(),user.getEmail())),user);
+    }
+    public int hashCode(String accountNumber){
+        return Objects.hash(accountNumber);
+    }
+    public boolean equals(Object o){
+        if(this==o)return true;
+        if (!(o instanceof Account)) return false;
+        Account account =(Account)o;
+        if(this.bankAccount!=account.bankAccount||this.currency!=account.currency||this.controlNumber!=account.controlNumber||this.userId!=account.userId||this.amount!=account.amount||this.allUsers!=account.allUsers){
+            return false;
+        }
+        return true;
     }
 
     public String getCurrency() {
@@ -90,7 +103,7 @@ public class Account {
         return this.bankAccount + this.currency + this.controlNumber + codeBranch + userId.substring(0, 7);
     }
 
-   /*public static void main(String[] args) {
+  /* public static void main(String[] args) {
         Account ac = new Account(978, 40817, 558924789,0);
         System.out.println(ac.createAccountNumber());
     }*/
