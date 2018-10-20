@@ -11,6 +11,7 @@ public class Transaction {
         this.balanceChange = balanceChange;
     }
 
+
     public boolean commitTransaction() {
         if (from == null || where == null) {
             System.out.println("Invalid transation participants.\n");
