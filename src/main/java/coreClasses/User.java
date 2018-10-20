@@ -1,37 +1,48 @@
 package coreClasses;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
     private String name;
     private String surname;
+    private int individORcorporate;
+    private String sex;
+    private String passportData;
     private String address;
     private String phone;
     private String email;
     private int id;
-    private int age;
+    private String dateOfBirth;
     private Map<String, Account> allUserAccounts = new HashMap<String, Account>();
 
-    public User(String name, String surname, String address, String phone, String email, int id, int age) {
+    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, HashMap allUserAccounts) {
         this.name = name;
         this.surname = surname;
+        this.individORcorporate = individORcorporate;
+        this.sex = sex;
+        this.passportData = passportData;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.id = id;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
+        this.allUserAccounts = allUserAccounts;
     }
 
-    public User(String name, String surname, String address, String phone, String email, int id, int age, Account account) {
+    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, HashMap allUserAccounts, Account account) {
         this.name = name;
         this.surname = surname;
+        this.individORcorporate = individORcorporate;
+        this.sex = sex;
+        this.passportData = passportData;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.id = id;
-        this.age = age;
-        this.allUserAccounts.put(account.createAccountNumber(),account);
+        this.dateOfBirth = dateOfBirth;
+        this.allUserAccounts.put(account.createAccountNumber(), account);
     }
 
     public String getName() {
@@ -58,8 +69,24 @@ public class User {
         return id;
     }
 
-    public int getAge() {
-        return age;
+    public int getIndividORcorporate() {
+        return individORcorporate;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getPassportData() {
+        return passportData;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public Map<String, Account> getAllUserAccounts() {
+        return allUserAccounts;
     }
 
     public void setName(String name) {
@@ -82,23 +109,21 @@ public class User {
         this.email = email;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPassportData(String passportData) {
+        this.passportData = passportData;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAllUserAccounts(Map<String, Account> allUserAccounts) {
+        this.allUserAccounts = allUserAccounts;
     }
 
-    public Map<String, Account> getAllUserAccounts() {
-        return allUserAccounts;
-    }
+
     //why cannot i place an annotation here? like @override
 
-    public int hashCode(int id, String name, String email) {
+    public int hashCode(String dateOfBirth, String sex) {
         int hash = 5;
-        hash = 31 * hash + (name == null ? 0 : name.hashCode());
-        hash = 31 * hash + (email == null ? 0 : email.hashCode());
+        hash = 31 * hash + (dateOfBirth == null ? 0 : dateOfBirth.hashCode());
+        hash = 31 * hash + (sex == null ? 0 : sex.hashCode());
         return hash;
     }
 
@@ -106,19 +131,26 @@ public class User {
         if (o == this) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return this.name.equals(user.name) && this.surname.equals(user.surname) && this.address.equals(user.address) && this.phone.equals(user.phone) && this.email.equals(user.email) && this.id == user.id && this.age == user.age;
+        return this.name.equals(user.name) &&
+                this.surname.equals(user.surname) &&
+                this.individORcorporate == user.individORcorporate &&
+                this.sex.equals(user.sex) &&
+                this.passportData.equals(user.passportData) &&
+                this.address.equals(user.address) &&
+                this.phone.equals(user.phone) &&
+                this.email.equals(user.email) &&
+                this.id == user.id &&
+                this.dateOfBirth.equals(user.dateOfBirth) &&
+                this.allUserAccounts.keySet().equals(user.allUserAccounts.keySet());
     }
 
     public void addAccount(Account account) {
-        this.allUserAccounts.put(account.createAccountNumber(),account);
+        this.allUserAccounts.put(account.createAccountNumber(), account);
     }
 
-   /* public void cashFlow(Account account,Money money,int indicator) {
-        this.allUserAccounts.get(account.createAccountNumber()).setAmount(money,indicator);
-    }*/
-
-    public void closeAccount(Account account) {
+    public boolean closeAccount(Account account) {
         boolean remove = this.allUserAccounts.remove(account.createAccountNumber(), account);
+        return remove;
     }
 
 }

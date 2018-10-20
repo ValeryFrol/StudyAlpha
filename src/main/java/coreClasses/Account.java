@@ -1,50 +1,50 @@
 package coreClasses;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Account {
     private String bankAccount;
-    private String currency; //take currency from Money object
+    private Currency currency;
     private String controlNumber;
     private static final String codeBranch = "1954";
     private String userId;
-    private double amount; //take currency from Money object
+    private Money balance;
+    private Locale locale;
     private Map<Integer, User> allUsers = new HashMap<Integer, User>();
 
-    /*public Account(String currency, String bankAccount, String userId) {
-        setCurrency(currency);
-        setBankAccount(bankAccount);
+    public Account(Locale locale, String bankAccount, String userId, User user) {
+        this.locale=locale;
+        this.currency = Currency.getInstance(locale);
+        this.bankAccount = bankAccount;
         Random rand = new Random();
         this.controlNumber = Integer.toString(rand.nextInt(10));
-        setUserId(userId);
-    }*/
-
-    public Account(int currency, int bankAccount, int userId, Money money,int indicator, User user) {
-        setCurrency(Integer.toString(currency));
-        setBankAccount(Integer.toString(bankAccount));
-        Random rand = new Random();
-        this.controlNumber = Integer.toString(rand.nextInt(10));
-        setUserId(Integer.toString(userId));
-        setAmount(money,indicator);
-        this.allUsers.put(Integer.valueOf(user.hashCode(user.getId(),user.getName(),user.getEmail())),user);
+        this.userId = userId;
+        balance = new Money(0);
+        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
     }
-    public int hashCode(String accountNumber){
+
+    public int hashCode(String accountNumber) {
         return Objects.hash(accountNumber);
     }
-    public boolean equals(Object o){
-        if(this==o)return true;
+    public void addUser(User user){
+        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+    }
+    public boolean removeUser(User user){
+        boolean remove = this.allUsers.remove(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+        return remove;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
         if (!(o instanceof Account)) return false;
-        Account account =(Account)o;
-        if(this.bankAccount!=account.bankAccount||this.currency!=account.currency||this.controlNumber!=account.controlNumber||this.userId!=account.userId||this.amount!=account.amount||this.allUsers!=account.allUsers){
+        Account account = (Account) o;
+        if (this.bankAccount != account.bankAccount || this.currency != account.currency || this.controlNumber != account.controlNumber || this.userId != account.userId || this.allUsers != account.allUsers) {
             return false;
         }
         return true;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
@@ -60,37 +60,13 @@ public class Account {
         return userId;
     }
 
-    public double getAmount() {
-        return amount;
+    public Money getBalance() {
+        return balance;
     }
 
-    public void setAmount(Money money, int indicator) {
-        this.amount = amount; //create Money class and call a method which returns an amount of money that we want to pay in
-        //check whether a currency of these money corresponds to the currency of given account
-        //take into account that there already could be some money on the account
-        //check amount of money on the account
-    }
+    public Locale getLocale() {return locale;}
 
-    public void setCurrency(String currency) {
-        if (currency == null) {
-            throw new IllegalArgumentException("currency can't be null");
-        }
-        this.currency = currency; //validation of a number of a currency, do we have to create a collection with all currency codes and then check the incoming currency?
-    }
-
-    public void setBankAccount(String bankAccount) {
-        if (bankAccount == null) {
-            throw new IllegalArgumentException("bank account can't be null");
-        }
-        this.bankAccount = bankAccount;
-    }
-
-    public void setUserId(String userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("user ID can't be null");
-        }
-        this.userId = userId;
-    }
+    public Map<Integer, User> getAllUsers() {return allUsers;}
 
     public String createAccountNumber() {
         if (this.userId.length() < 7) {
@@ -98,13 +74,19 @@ public class Account {
             for (int i = 0; i < (7 - this.userId.length()); i++) {
                 sb.append("0");
             }
-            return this.bankAccount + this.currency + this.controlNumber + codeBranch + sb.append(this.userId);
+            return this.bankAccount + this.currency.getNumericCodeAsString() + this.controlNumber + codeBranch + sb.append(this.userId);
         }
         return this.bankAccount + this.currency + this.controlNumber + codeBranch + userId.substring(0, 7);
     }
+    public void changeBalance(Transaction transaction){
 
-  /* public static void main(String[] args) {
-        Account ac = new Account(978, 40817, 558924789,0);
-        System.out.println(ac.createAccountNumber());
-    }*/
+    }
+
+   public static void main(String[] args) {
+        /*Currency currency = Currency.getInstance(Locale.GERMANY);
+       System.out.println(currency.getNumericCodeAsString());*/
+
+      //  Account ac = new Account(978, 40817, 558924789,0);
+        //System.out.println(ac.createAccountNumber());
+    }
 }
