@@ -6,11 +6,12 @@ import java.util.Locale;
 public class Money implements Comparable<Money>{
 
     //Thrown each time something's wrong with currencies
-    public static final class MismatchedCurrencyException extends RuntimeException {
+    // we have exchange rate for this
+   /* public static final class MismatchedCurrencyException extends RuntimeException {
         MismatchedCurrencyException(String message){
             super(message);
         }
-    }
+    }*/
 
     //All internal calculations are done with "cents", displayed amount is in "dollars".
     public double getAmount() {
@@ -66,12 +67,12 @@ public class Money implements Comparable<Money>{
 
     //Basic math operations
     public Money add(Money other) {
-        checkCurrenciesMatch(other);
+     //   checkCurrenciesMatch(other);
         return newMoney(amount + other.amount);
     }
 
     public Money subtract(Money other) {
-        checkCurrenciesMatch(other);
+      //  checkCurrenciesMatch(other);
         return newMoney(amount - other.amount);
     }
 
@@ -86,7 +87,7 @@ public class Money implements Comparable<Money>{
 
     //For comparable<>
     public int compareTo(Money other) {
-        checkCurrenciesMatch(other);
+     //   checkCurrenciesMatch(other);
         if(amount < other.amount)
             return -1;
         if(amount == other.amount)
@@ -128,13 +129,13 @@ public class Money implements Comparable<Money>{
         return f;
     }
 
-    private void checkCurrenciesMatch(Money that) {
+   /* private void checkCurrenciesMatch(Money that) {
         if (!this.currency.equals(that.getCurrency())) {
             throw new MismatchedCurrencyException(
                     that.getCurrency() + " doesn't match the expected currency : " + this.currency
             );
         }
-    }
+    }*/
 
     private Money newMoney(long amount) {
         Money money = new Money();
