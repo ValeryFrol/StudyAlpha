@@ -1,9 +1,10 @@
 package coreClasses;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
-
 
 
 public class Transaction {
@@ -21,19 +22,18 @@ public class Transaction {
             System.out.println("Invalid transation participants.\n");
             return false;
         }
-        if (from.getBalance().getAmount() < this.balanceChange.getAmount()) {
-            return false;
-        }
-        if(from.getCurrency().getNumericCodeAsString().equals(where.getCurrency().getNumericCodeAsString())==false){
-            Date date = new Date();
-            Time time = new Time();
-            from.getBalance().subtract(this.balanceChange*Exchange.getExchangeRateFromDB(from.getCurrency(),where.getCurrency(),date,time));
+        if (from.getBlock() == true || where.getBlock() == true) return false;
+        if (from.getBalance().getAmount() < this.balanceChange.getAmount()) return false;
+        if (from.getCurrency().getNumericCodeAsString().equals(where.getCurrency().getNumericCodeAsString()) == false) {
+            from.getBalance().subtract(this.balanceChange.multiply(Exchange.getExchangeRateForDateFromDB(from.getCurrency(), where.getCurrency(), LocalDate.now(), LocalTime.now())));
+            where.getBalance().add(this.balanceChange);
+            return true;
+        } else {
+            from.getBalance().subtract(this.balanceChange);
             where.getBalance().add(this.balanceChange);
             return true;
         }
-        from.getBalance().subtract(this.balanceChange);
-        where.getBalance().add(this.balanceChange);
-        return true;
+
     }
 
     public int hashCode() {

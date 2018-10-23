@@ -11,25 +11,28 @@ public class Account {
     private Money balance;
     private Locale locale;
     private Map<Integer, User> allUsers = new HashMap<Integer, User>();
+    private boolean block=false;
 
     public Account(Locale locale, String bankAccount, String userId, User user) {
-        this.locale=locale;
+        this.locale = locale;
         this.currency = Currency.getInstance(locale);
         this.bankAccount = bankAccount;
         Random rand = new Random();
         this.controlNumber = Integer.toString(rand.nextInt(10));
         this.userId = userId;
-        balance = new Money(0);
+        balance = new Money(0, Currency.getInstance(locale));
         this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
     }
 
     public int hashCode(String accountNumber) {
         return Objects.hash(accountNumber);
     }
-    public void addUser(User user){
+
+    public void addUser(User user) {
         this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
     }
-    public boolean removeUser(User user){
+
+    public boolean removeUser(User user) {
         boolean remove = this.allUsers.remove(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
         return remove;
     }
@@ -48,6 +51,14 @@ public class Account {
         return currency;
     }
 
+    public void setBlock(boolean block) {
+        this.block = block;
+    }
+
+    public boolean getBlock() {
+        return block;
+    }
+
     public String getCurrentAccount() {
         return bankAccount;
     }
@@ -64,9 +75,13 @@ public class Account {
         return balance;
     }
 
-    public Locale getLocale() {return locale;}
+    public Locale getLocale() {
+        return locale;
+    }
 
-    public Map<Integer, User> getAllUsers() {return allUsers;}
+    public Map<Integer, User> getAllUsers() {
+        return allUsers;
+    }
 
     public String createAccountNumber() {
         if (this.userId.length() < 7) {
@@ -78,15 +93,16 @@ public class Account {
         }
         return this.bankAccount + this.currency + this.controlNumber + codeBranch + userId.substring(0, 7);
     }
-    public void changeBalance(Transaction transaction){
+
+    public void changeBalance(Transaction transaction) {
 
     }
 
-   public static void main(String[] args) {
+    public static void main(String[] args) {
         /*Currency currency = Currency.getInstance(Locale.GERMANY);
        System.out.println(currency.getNumericCodeAsString());*/
 
-      //  Account ac = new Account(978, 40817, 558924789,0);
+        //  Account ac = new Account(978, 40817, 558924789,0);
         //System.out.println(ac.createAccountNumber());
     }
 }

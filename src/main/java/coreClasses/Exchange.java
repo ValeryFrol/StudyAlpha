@@ -1,11 +1,13 @@
 package coreClasses;
 
-import java.sql.Time;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Currency;
-import java.util.Date;
+
 
 public class Exchange {
-    public static double getExchangeRateFromDB(Currency currencyFrom, Currency currencyTo, Date date, Time time){
+    public static double getExchangeRateForDateFromDB(Currency currencyFrom, Currency currencyTo, LocalDate date, LocalTime time){
         //connects to DB and loads an exchange rate for the date needed
         return 1;
     }
