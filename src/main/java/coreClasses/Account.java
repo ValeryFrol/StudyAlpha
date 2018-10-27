@@ -11,7 +11,8 @@ public class Account {
     private Money balance;
     private Locale locale;
     private Map<Integer, User> allUsers = new HashMap<Integer, User>();
-    private boolean block=false;
+    private boolean block = false;
+    private String accountNumber = this.createAccountNumber();
 
     public Account(Locale locale, String bankAccount, String userId, User user) {
         this.locale = locale;
@@ -26,15 +27,6 @@ public class Account {
 
     public int hashCode(String accountNumber) {
         return Objects.hash(accountNumber);
-    }
-
-    public void addUser(User user) {
-        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
-    }
-
-    public boolean removeUser(User user) {
-        boolean remove = this.allUsers.remove(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
-        return remove;
     }
 
     public boolean equals(Object o) {
@@ -79,8 +71,24 @@ public class Account {
         return locale;
     }
 
+    public void setBalance(Money balance) {
+        this.balance = balance;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
     public Map<Integer, User> getAllUsers() {
         return allUsers;
+    }
+
+    public void addNewUser(User user) {
+        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+    }
+    public boolean removeUser(User user) {
+        boolean remove = this.allUsers.remove(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+        return remove;
     }
 
     public String createAccountNumber() {
@@ -92,17 +100,5 @@ public class Account {
             return this.bankAccount + this.currency.getNumericCodeAsString() + this.controlNumber + codeBranch + sb.append(this.userId);
         }
         return this.bankAccount + this.currency + this.controlNumber + codeBranch + userId.substring(0, 7);
-    }
-
-    public void changeBalance(Transaction transaction) {
-
-    }
-
-    public static void main(String[] args) {
-        /*Currency currency = Currency.getInstance(Locale.GERMANY);
-       System.out.println(currency.getNumericCodeAsString());*/
-
-        //  Account ac = new Account(978, 40817, 558924789,0);
-        //System.out.println(ac.createAccountNumber());
     }
 }

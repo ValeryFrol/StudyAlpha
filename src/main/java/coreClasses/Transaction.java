@@ -17,25 +17,6 @@ public class Transaction {
     }
 
 
-    public boolean commitTransaction() {
-        if (this.from == null || this.where == null) {
-            System.out.println("Invalid transation participants.\n");
-            return false;
-        }
-        if (from.getBlock() == true || where.getBlock() == true) return false;
-        if (from.getBalance().getAmount() < this.balanceChange.getAmount()) return false;
-        if (from.getCurrency().getNumericCodeAsString().equals(where.getCurrency().getNumericCodeAsString()) == false) {
-            from.getBalance().subtract(this.balanceChange.multiply(Exchange.getExchangeRateForDateFromDB(from.getCurrency(), where.getCurrency(), LocalDate.now(), LocalTime.now())));
-            where.getBalance().add(this.balanceChange);
-            return true;
-        } else {
-            from.getBalance().subtract(this.balanceChange);
-            where.getBalance().add(this.balanceChange);
-            return true;
-        }
-
-    }
-
     public int hashCode() {
         return Objects.hash(id, from, where, balanceChange);
     }
@@ -57,4 +38,20 @@ public class Transaction {
     private long id;
     private Money balanceChange;
     private Account from, where;
+
+    public long getId() {
+        return id;
+    }
+
+    public Money getBalanceChange() {
+        return balanceChange;
+    }
+
+    public Account getFrom() {
+        return from;
+    }
+
+    public Account getWhere() {
+        return where;
+    }
 }

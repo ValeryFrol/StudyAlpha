@@ -17,7 +17,7 @@ public class User {
     private String dateOfBirth;
     private Map<String, Account> allUserAccounts = new HashMap<String, Account>();
 
-    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, HashMap allUserAccounts) {
+    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.individORcorporate = individORcorporate;
@@ -28,10 +28,10 @@ public class User {
         this.email = email;
         this.id = id;
         this.dateOfBirth = dateOfBirth;
-        this.allUserAccounts = allUserAccounts;
+
     }
 
-    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, HashMap allUserAccounts, Account account) {
+    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, Account account) {
         this.name = name;
         this.surname = surname;
         this.individORcorporate = individORcorporate;
@@ -113,8 +113,8 @@ public class User {
         this.passportData = passportData;
     }
 
-    public void setAllUserAccounts(Map<String, Account> allUserAccounts) {
-        this.allUserAccounts = allUserAccounts;
+    public void setAllUserAccounts(Account account) {
+        this.allUserAccounts.put(account.createAccountNumber(), account);
     }
 
 
