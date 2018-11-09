@@ -87,38 +87,7 @@ public class User {
 
     public Map<String, Account> getAllUserAccounts() {
         return allUserAccounts;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassportData(String passportData) {
-        this.passportData = passportData;
-    }
-
-    public void setAllUserAccounts(Account account) {
-        this.allUserAccounts.put(account.createAccountNumber(), account);
-    }
-
-
-    //why cannot i place an annotation here? like @override
+    } //todo method has to take an account we want to get and return this account's object
 
     public int hashCode(String dateOfBirth, String sex) {
         int hash = 5;
@@ -152,5 +121,6 @@ public class User {
         boolean remove = this.allUserAccounts.remove(account.createAccountNumber(), account);
         return remove;
     }
+
 
 }

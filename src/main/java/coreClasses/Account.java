@@ -11,7 +11,7 @@ public class Account {
     private Money balance;
     private Locale locale;
     private Map<Integer, User> allUsers = new HashMap<Integer, User>();
-    private boolean block = false;
+    private boolean blocked = false;
     private String accountNumber = this.createAccountNumber();
 
     public Account(Locale locale, String bankAccount, String userId, User user) {
@@ -39,16 +39,18 @@ public class Account {
         return true;
     }
 
+    //todo change getters: we have to get info from DB
+
     public Currency getCurrency() {
         return currency;
     }
 
-    public void setBlock(boolean block) {
-        this.block = block;
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
-    public boolean getBlock() {
-        return block;
+    public boolean getBlocked() {
+        return blocked;
     }
 
     public String getCurrentAccount() {
