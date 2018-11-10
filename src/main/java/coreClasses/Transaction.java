@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Objects;
 
 
-public class Transaction {
+public final class Transaction {
 
     public Transaction(Account from, Account where, Money balanceChange) {
         this.id = Math.round(Math.random()); //Need something less stupid
@@ -35,9 +35,9 @@ public class Transaction {
 
     /************************************************************/
 
-    private long id;
-    private Money balanceChange;
-    private Account from, where;
+    private final long id;
+    private final Money balanceChange;
+    private final Account from, where;
 
     public long getId() {
         return id;

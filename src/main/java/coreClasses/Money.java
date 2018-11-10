@@ -3,22 +3,16 @@ package coreClasses;
 import java.util.Currency;
 import java.util.Locale;
 
-public class Money implements Comparable<Money>{
-
-    //Thrown each time something's wrong with currencies
-    // we have exchange rate for this
-   /* public static final class MismatchedCurrencyException extends RuntimeException {
-        MismatchedCurrencyException(String message){
-            super(message);
-        }
-    }*/
-
+public final class Money implements Comparable<Money> {
+    private long amount;
+    private Currency currency;
+    private static final Currency DEFAULT_CURRENCY = Currency.getInstance(Locale.US);
     //All internal calculations are done with "cents", displayed amount is in "dollars".
     public double getAmount() {
-        return (double)amount / centFactor();
+        return (double) amount / centFactor();
     }
 
-    public Currency getCurrency(){
+    public Currency getCurrency() {
         return currency;
     }
 
@@ -53,7 +47,7 @@ public class Money implements Comparable<Money>{
         Money money = (Money) o;
 
         if (amount != money.amount) return false;
-        if (currency != null? !currency.equals(money.currency): money.currency != null) return false;
+        if (currency != null ? !currency.equals(money.currency) : money.currency != null) return false;
 
         return true;
     }
@@ -61,18 +55,18 @@ public class Money implements Comparable<Money>{
     public int hashCode() {
         int result;
         result = (int) (amount ^ (amount >>> 32));
-        result = 31 * result + (currency != null? currency.hashCode(): 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
     }
 
     //Basic math operations
     public Money add(Money other) {
-     //   checkCurrenciesMatch(other);
+        //   checkCurrenciesMatch(other);
         return newMoney(amount + other.amount);
     }
 
     public Money subtract(Money other) {
-      //  checkCurrenciesMatch(other);
+        //  checkCurrenciesMatch(other);
         return newMoney(amount - other.amount);
     }
 
@@ -87,10 +81,10 @@ public class Money implements Comparable<Money>{
 
     //For comparable<>
     public int compareTo(Money other) {
-     //   checkCurrenciesMatch(other);
-        if(amount < other.amount)
+        //   checkCurrenciesMatch(other);
+        if (amount < other.amount)
             return -1;
-        if(amount == other.amount)
+        if (amount == other.amount)
             return 0;
         return 1;
     }
@@ -118,14 +112,12 @@ public class Money implements Comparable<Money>{
 
     /*****************************************************************************/
 
-    private long amount;
-    private Currency currency;
-    private static final Currency DEFAULT_CURRENCY = Currency.getInstance(Locale.US);
+
 
     private int centFactor() {
         int f = 1;
-        for(int i = 0; i < currency.getDefaultFractionDigits(); i ++)
-            f*=10;
+        for (int i = 0; i < currency.getDefaultFractionDigits(); i++)
+            f *= 10;
         return f;
     }
 

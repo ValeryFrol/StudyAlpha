@@ -2,19 +2,19 @@ package coreClasses;
 
 import java.util.*;
 
-public class Account {
-    private String bankAccount;
-    private Currency currency;
-    private String controlNumber;
+public final class Account {
+    private final String bankAccount;
+    private final Currency currency;
+    private final String controlNumber;
     private static final String codeBranch = "1954";
-    private String userId;
-    private Money balance;
+    private final String userId;
+    private final Money balance;
     private Locale locale;
-    private Map<Integer, User> allUsers = new HashMap<Integer, User>();
-    private boolean blocked = false;
-    private String accountNumber = this.createAccountNumber();
+    private final HashSet<User> allUsers = new HashSet<User>();
+    private final boolean blocked = false;
+    private final String accountNumber = this.createAccountNumber();
 
-    public Account(Locale locale, String bankAccount, String userId, User user) {
+    public Account(Locale locale, String bankAccount, String userId) {
         this.locale = locale;
         this.currency = Currency.getInstance(locale);
         this.bankAccount = bankAccount;
@@ -22,7 +22,6 @@ public class Account {
         this.controlNumber = Integer.toString(rand.nextInt(10));
         this.userId = userId;
         balance = new Money(0, Currency.getInstance(locale));
-        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
     }
 
     public int hashCode(String accountNumber) {
@@ -33,20 +32,18 @@ public class Account {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        if (this.bankAccount != account.bankAccount || this.currency != account.currency || this.controlNumber != account.controlNumber || this.userId != account.userId || this.allUsers != account.allUsers) {
+        if (this.bankAccount != account.bankAccount ||
+                this.currency != account.currency ||
+                this.controlNumber != account.controlNumber ||
+                this.userId != account.userId ||
+                this.allUsers != account.allUsers) {
             return false;
         }
         return true;
     }
 
-    //todo change getters: we have to get info from DB
-
     public Currency getCurrency() {
         return currency;
-    }
-
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
     }
 
     public boolean getBlocked() {
@@ -73,23 +70,24 @@ public class Account {
         return locale;
     }
 
-    public void setBalance(Money balance) {
-        this.balance = balance;
+    public String getBankAccount() {
+        return bankAccount;
     }
 
     public String getAccountNumber() {
         return accountNumber;
     }
 
-    public Map<Integer, User> getAllUsers() {
-        return allUsers;
+    public Object getAllUsers() {
+        return allUsers.clone();
     }
 
     public void addNewUser(User user) {
-        this.allUsers.put(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+        this.allUsers.add(user);
     }
+
     public boolean removeUser(User user) {
-        boolean remove = this.allUsers.remove(Integer.valueOf(user.hashCode(user.getDateOfBirth(), user.getSex())), user);
+        boolean remove = this.allUsers.remove(user);
         return remove;
     }
 

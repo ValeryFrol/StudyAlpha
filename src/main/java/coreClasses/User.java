@@ -1,23 +1,22 @@
 package coreClasses;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class User {
-    private String name;
-    private String surname;
-    private int individORcorporate;
-    private String sex;
-    private String passportData;
-    private String address;
-    private String phone;
-    private String email;
-    private int id;
-    private String dateOfBirth;
-    private Map<String, Account> allUserAccounts = new HashMap<String, Account>();
+public final class User {
+    private final String name;
+    private final String surname;
+    private final int individORcorporate;
+    private final String sex;
+    private final String passportData;
+    private final String address;
+    private final String phone;
+    private final String email;
+    private final int id;
+    private final String dateOfBirth;
+    private final HashSet<Account> allUserAccounts = new HashSet<Account>();
+    private boolean blocked = false;
 
-    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth) {
+    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth,boolean blocked) {
         this.name = name;
         this.surname = surname;
         this.individORcorporate = individORcorporate;
@@ -28,21 +27,12 @@ public class User {
         this.email = email;
         this.id = id;
         this.dateOfBirth = dateOfBirth;
+        this.blocked = blocked;
 
     }
 
-    public User(String name, String surname, int individORcorporate, String sex, String passportData, String address, String phone, String email, int id, String dateOfBirth, Account account) {
-        this.name = name;
-        this.surname = surname;
-        this.individORcorporate = individORcorporate;
-        this.sex = sex;
-        this.passportData = passportData;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.id = id;
-        this.dateOfBirth = dateOfBirth;
-        this.allUserAccounts.put(account.createAccountNumber(), account);
+    public boolean getBlocked() {
+        return blocked;
     }
 
     public String getName() {
@@ -85,9 +75,9 @@ public class User {
         return dateOfBirth;
     }
 
-    public Map<String, Account> getAllUserAccounts() {
-        return allUserAccounts;
-    } //todo method has to take an account we want to get and return this account's object
+    public Object getAllUserAccounts() {
+        return allUserAccounts.clone();
+    }
 
     public int hashCode(String dateOfBirth, String sex) {
         int hash = 5;
@@ -110,17 +100,15 @@ public class User {
                 this.email.equals(user.email) &&
                 this.id == user.id &&
                 this.dateOfBirth.equals(user.dateOfBirth) &&
-                this.allUserAccounts.keySet().equals(user.allUserAccounts.keySet());
+                this.allUserAccounts.equals(user.allUserAccounts); //think over this equals of two hashsets, i think it's not good
     }
 
     public void addAccount(Account account) {
-        this.allUserAccounts.put(account.createAccountNumber(), account);
+        this.allUserAccounts.add(account);
     }
 
     public boolean closeAccount(Account account) {
-        boolean remove = this.allUserAccounts.remove(account.createAccountNumber(), account);
+        boolean remove = this.allUserAccounts.remove(account);
         return remove;
     }
-
-
 }
